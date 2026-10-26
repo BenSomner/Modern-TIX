@@ -9,6 +9,18 @@ independent homage and isn't affiliated with them.
 
 ![Modern TIX showing 12:47 in the Classic TIX colours](docs/screenshots/clock-dark.png)
 
+## Download
+
+Get the latest version from the [Releases page](../../releases/latest). There are two downloads:
+
+| Download | Size | Needs |
+|---|---|---|
+| `ModernTIX-<version>-win-x64.zip` | Under 1 MB | The [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| `ModernTIX-<version>-win-x64-standalone.zip` | About 67 MB | Nothing; .NET is built in |
+
+Extract the zip anywhere and run `ModernTIX.exe`. Windows may show a SmartScreen warning because the app isn't
+code-signed; choose **More info → Run anyway**.
+
 > **Planned features**
 > - Multiple clocks for different time zones, each with an optional short time zone label (e.g. UTC, EST, JST).
 
@@ -60,8 +72,17 @@ registry on each PC.
 
 ## Building
 
-Needs the .NET 10 SDK. The published app needs the .NET 10 Desktop Runtime.
+Needs the .NET 10 SDK.
+
+The small build, which needs the .NET 10 Desktop Runtime to run:
 
 ```
 dotnet publish -c Release -o publish
+```
+
+The standalone build, a single exe with .NET built in (needs nuget.org as a package source, or add
+`--source https://api.nuget.org/v3/index.json`):
+
+```
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish-standalone
 ```
