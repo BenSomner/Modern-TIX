@@ -216,7 +216,7 @@ public partial class SettingsWindow : Window
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or System.Security.SecurityException)
         {
-            MessageBox.Show(this, $"Couldn't change the startup setting: {ex.Message}", "TIX Clock",
+            MessageBox.Show(this, $"Couldn't change the startup setting: {ex.Message}", App.DisplayName,
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         StartupBox.IsChecked = StartupHelper.IsEnabled();
@@ -236,7 +236,7 @@ public partial class SettingsWindow : Window
                   "Portable mode needs the app to be in a folder you can write to, such as a USB stick or your " +
                   "Documents, rather than Program Files."
                 : $"Couldn't move settings back from the app's folder.\n\n{ex.Message}";
-            MessageBox.Show(this, message, "TIX Clock", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, message, App.DisplayName, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         PortableBox.IsChecked = AppSettings.IsPortable;
         SettingsPathText.Text = $"Settings are saved in {AppSettings.FilePath}";

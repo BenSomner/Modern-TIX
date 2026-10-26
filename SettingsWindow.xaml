@@ -1,7 +1,7 @@
 <Window x:Class="TixClock.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="TIX Clock settings"
+        Title="Modern TIX settings"
         Icon="TixClock.ico"
         Width="560"
         Height="600"
@@ -337,11 +337,13 @@
                                 </Grid.ColumnDefinitions>
                                 <Image Source="TixClock.ico" Width="40" Height="40" Margin="0,0,14,0" VerticalAlignment="Top" />
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="TIX Clock" FontSize="15" FontWeight="SemiBold" />
+                                    <TextBlock Text="Modern TIX" FontSize="15" FontWeight="SemiBold" />
                                     <TextBlock x:Name="VersionText" Style="{StaticResource Hint}" Margin="0,2,0,8" />
-                                    <TextBlock Text="Created by Ben Somner with Claude Code" TextWrapping="Wrap" />
+                                    <TextBlock Text="Created by Ben Somner" TextWrapping="Wrap" />
                                     <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,0"
-                                               Text="Inspired by the original TIX LED clock by Cube Root Labs." />
+                                               Text="Made with AI: the code was written by Claude Code, Anthropic's AI coding assistant, from Ben's ideas and feedback." />
+                                    <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,0"
+                                               Text="Inspired by the original TIX LED clock by Cube Root Labs. Not affiliated with Cube Root Labs." />
                                 </StackPanel>
                             </Grid>
                         </Border>

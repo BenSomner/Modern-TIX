@@ -7,14 +7,18 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>TixClock</AssemblyName>
+    <AssemblyName>ModernTIX</AssemblyName>
     <RootNamespace>TixClock</RootNamespace>
     <ApplicationIcon>TixClock.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Version>1.0.0</Version>
-    <Product>TIX Clock</Product>
+    <!-- Keep the product version a plain 1.0.0 rather than appending the Git commit -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <Product>Modern TIX</Product>
+    <!-- Shown as the app's name in Task Manager -->
+    <AssemblyTitle>Modern TIX</AssemblyTitle>
     <Authors>Ben Somner</Authors>
-    <Copyright>Created by Ben Somner with Claude Code</Copyright>
+    <Copyright>Copyright © 2026 Ben Somner</Copyright>
     <Description>A modern Windows take on the TIX LED clock</Description>
     <!-- WPF Fluent theme and WinForms colour mode are flagged experimental; WFO0003 is a WinForms-only DPI hint
          that doesn't apply here, as WPF reads its DPI awareness from the manifest -->

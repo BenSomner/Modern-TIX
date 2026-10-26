@@ -11,7 +11,7 @@ public enum BackdropChoice { Acrylic, Mica, Solid }
 
 public enum LedShape { Square, Round }
 
-/// <summary>User preferences, stored as JSON in %APPDATA%\TixClock\settings.json.</summary>
+/// <summary>User preferences, stored as JSON in %APPDATA%\ModernTIX\settings.json (or next to the exe when portable).</summary>
 public sealed class AppSettings
 {
     public const string DefaultHourTens = "#E53935";
@@ -72,13 +72,18 @@ public sealed class AppSettings
     public double? Left { get; set; }
     public double? Top { get; set; }
 
-    private static readonly string FolderPath =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TixClock");
+    private static readonly string AppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+    private static readonly string FolderPath = Path.Combine(AppDataFolder, "ModernTIX");
 
     private static readonly string AppDataFilePath = Path.Combine(FolderPath, "settings.json");
 
     /// <summary>If this file exists next to the exe, the app is in portable mode and uses it instead of %APPDATA%.</summary>
-    public static readonly string PortableFilePath = Path.Combine(AppContext.BaseDirectory, "TixClock.settings.json");
+    public static readonly string PortableFilePath = Path.Combine(AppContext.BaseDirectory, "ModernTIX.settings.json");
+
+    // Where settings lived before the app was renamed from "TIX Clock".
+    private static readonly string OldFolderPath = Path.Combine(AppDataFolder, "TixClock");
+    private static readonly string OldPortableFilePath = Path.Combine(AppContext.BaseDirectory, "TixClock.settings.json");
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -93,6 +98,7 @@ public sealed class AppSettings
 
     public static AppSettings Load()
     {
+        MoveSettingsFromOldName();
         FilePath = File.Exists(PortableFilePath) ? PortableFilePath : AppDataFilePath;
 
         AppSettings settings;
@@ -138,6 +144,30 @@ public sealed class AppSettings
         // The portable file is what switches portable mode on, so it has to go when switching back.
         // The %APPDATA% copy is left alone when going portable; it's simply not read any more.
         if (!portable) File.Delete(previous);
+    }
+
+    /// <summary>Carries settings over from the "TIX Clock" locations, unless the new ones already exist.</summary>
+    private static void MoveSettingsFromOldName()
+    {
+        try
+        {
+            if (File.Exists(OldPortableFilePath) && !File.Exists(PortableFilePath))
+            {
+                File.Move(OldPortableFilePath, PortableFilePath);
+            }
+
+            string oldFile = Path.Combine(OldFolderPath, "settings.json");
+            if (File.Exists(oldFile) && !File.Exists(AppDataFilePath))
+            {
+                Directory.CreateDirectory(FolderPath);
+                File.Move(oldFile, AppDataFilePath);
+                if (!Directory.EnumerateFileSystemEntries(OldFolderPath).Any()) Directory.Delete(OldFolderPath);
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // Left where they are; the app starts with defaults rather than failing.
+        }
     }
 
     private void Write(string path)

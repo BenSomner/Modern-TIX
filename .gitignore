@@ -10,4 +10,5 @@ publish/
 *.suo
 
 # A portable-mode settings file, if one ends up next to a build
+ModernTIX.settings.json
 TixClock.settings.json

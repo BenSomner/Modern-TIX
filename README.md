@@ -1,6 +1,11 @@
-# TIX Clock
+# Modern TIX
 
-A modern Windows 10/11 take on the TIX LED clock (originally made by Cube Root Labs).
+A modern Windows 10/11 take on the TIX LED clock. The original TIX was made by Cube Root Labs; this is an
+independent homage and isn't affiliated with them.
+
+> **Made with AI:** Modern TIX was created by Ben Somner using Claude Code, Anthropic's AI coding assistant.
+> The code, icon and documentation were written by the AI from Ben's design ideas and feedback, then tested
+> and refined together.
 
 > **Planned features**
 > - Multiple clocks for different time zones, each with an optional short time zone label (e.g. UTC, EST, JST).
@@ -33,10 +38,10 @@ The pattern reshuffles every 1 s, 4 s (default) or 60 s, but the count only chan
 
 Switching between a Solid background and Acrylic/Mica restarts the clock, as they need different kinds of window.
 
-Settings are stored in `%APPDATA%\TixClock\settings.json`. "Start with Windows" adds a `TIX Clock` entry under
+Settings are stored in `%APPDATA%\ModernTIX\settings.json`. "Start with Windows" adds a `Modern TIX` entry under
 `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`.
 
-**Portable mode:** if `TixClock.settings.json` exists next to `TixClock.exe`, the app uses that instead, so the
+**Portable mode:** if `ModernTIX.settings.json` exists next to `ModernTIX.exe`, the app uses that instead, so the
 folder can be copied to a USB stick or synced between PCs. Turn it on or off in Settings → Behaviour, which moves the
 settings file for you. The folder has to be writable (not Program Files). "Start with Windows" still uses the
 registry on each PC.

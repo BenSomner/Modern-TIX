@@ -34,7 +34,7 @@ internal sealed class TrayIcon : IDisposable
         _icon = new NotifyIcon
         {
             Icon = LoadIcon(),
-            Text = "TIX Clock",
+            Text = App.DisplayName,
             ContextMenuStrip = _menu,
             Visible = true,
         };
@@ -43,7 +43,7 @@ internal sealed class TrayIcon : IDisposable
             if (e.Button == MouseButtons.Left) clock.ToggleVisibility();
         };
         // Hovering the tray icon shows the time as well.
-        _icon.MouseMove += (_, _) => _icon.Text = $"TIX Clock – {clock.CurrentTimeText}";
+        _icon.MouseMove += (_, _) => _icon.Text = $"{App.DisplayName} – {clock.CurrentTimeText}";
     }
 
     private static Icon LoadIcon()

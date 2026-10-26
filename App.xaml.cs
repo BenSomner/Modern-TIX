@@ -5,8 +5,11 @@ namespace TixClock;
 
 public partial class App : Application
 {
-    private const string MutexName = @"Local\TixClock.SingleInstance";
-    private const string ShowEventName = @"Local\TixClock.Show";
+    /// <summary>The name users see, in titles, the tray and message boxes.</summary>
+    public const string DisplayName = "Modern TIX";
+
+    private const string MutexName = @"Local\ModernTIX.SingleInstance";
+    private const string ShowEventName = @"Local\ModernTIX.Show";
     private const string RestartArg = "--restart";
     private const string SettingsArg = "--settings";
 
