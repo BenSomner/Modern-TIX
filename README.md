@@ -7,6 +7,8 @@ independent homage and isn't affiliated with them.
 > The code, icon and documentation were written by the AI from Ben's design ideas and feedback, then tested
 > and refined together.
 
+![Modern TIX showing 12:47 in the Classic TIX colours](docs/screenshots/clock-dark.png)
+
 > **Planned features**
 > - Multiple clocks for different time zones, each with an optional short time zone label (e.g. UTC, EST, JST).
 
@@ -20,6 +22,16 @@ Count the lit squares in each block to read the time:
 | 4 | 9 | Minute units |
 
 The pattern reshuffles every 1 s, 4 s (default) or 60 s, but the count only changes with the time.
+
+## Screenshots
+
+| Light theme | Round LEDs, no background, Ocean colours | Warm night colours, 60% background |
+|---|---|---|
+| ![Light theme](docs/screenshots/clock-light.png) | ![Round LEDs floating on the desktop in the Ocean colours](docs/screenshots/clock-floating.png) | ![Warm night colours with a part-transparent background](docs/screenshots/clock-warm.png) |
+
+| Settings: Display | Settings: Appearance |
+|---|---|
+| ![Settings window, Display tab](docs/screenshots/settings-display.png) | ![Settings window, Appearance tab](docs/screenshots/settings-appearance.png) |
 
 ## Using it
 
