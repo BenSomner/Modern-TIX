@@ -1,0 +1,370 @@
+<Window x:Class="TixClock.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TIX Clock settings"
+        Icon="TixClock.ico"
+        Width="560"
+        Height="600"
+        MinWidth="480"
+        MinHeight="400"
+        WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource {x:Type Window}}">
+    <Window.Resources>
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="2,20,0,8" />
+        </Style>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="Margin" Value="0,16,0,0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeColorDefaultBrush}" />
+        </Style>
+        <!-- A card straight after a section header doesn't need its own top gap -->
+        <Style x:Key="HeadedCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style x:Key="TabPage" TargetType="StackPanel">
+            <Setter Property="Margin" Value="20,0,20,20" />
+        </Style>
+        <Style x:Key="Row" TargetType="Grid">
+            <Setter Property="Margin" Value="0,6" />
+        </Style>
+        <Style x:Key="Hint" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Tab order matters: SettingsTab stores the index, and ShowAbout selects the About tab by name -->
+        <TabControl x:Name="Tabs" Margin="8,8,8,0" SelectionChanged="Tabs_SelectionChanged">
+
+            <TabItem Header="Clock">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Style="{StaticResource TabPage}">
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <CheckBox x:Name="Use24HourBox" Content="24-hour time" Margin="0,6" Click="OnChanged" />
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Change the pattern" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="IntervalBox" Grid.Column="1" MinWidth="170" SelectionChanged="OnChanged">
+                                        <ComboBoxItem Content="Every second" />
+                                        <ComboBoxItem Content="Every 4 seconds" />
+                                        <ComboBoxItem Content="Every minute" />
+                                    </ComboBox>
+                                </Grid>
+                                <CheckBox x:Name="TooltipBox" Content="Show the time when hovering over the clock" Margin="0,6" Click="OnChanged" />
+                                <CheckBox x:Name="TooltipDateBox" Content="Include the date" Margin="28,6,0,6" Click="OnChanged" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Display">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Style="{StaticResource TabPage}">
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Size" VerticalAlignment="Center" />
+                                    <Slider x:Name="ScaleSlider" Grid.Column="1" Minimum="0.5" Maximum="3" TickFrequency="0.1"
+                                            IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="OnChanged" />
+                                    <TextBlock x:Name="ScaleText" Grid.Column="2" TextAlignment="Right" VerticalAlignment="Center" />
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Rotation" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="RotationBox" Grid.Column="1" MinWidth="170" SelectionChanged="OnChanged">
+                                        <ComboBoxItem Content="Normal" />
+                                        <ComboBoxItem Content="90° clockwise" />
+                                        <ComboBoxItem Content="180°" />
+                                        <ComboBoxItem Content="90° anticlockwise" />
+                                    </ComboBox>
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Brightness" VerticalAlignment="Center" />
+                                    <Slider x:Name="BrightnessSlider" Grid.Column="1" Minimum="0.2" Maximum="1" TickFrequency="0.05"
+                                            IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="OnChanged" />
+                                    <TextBlock x:Name="BrightnessText" Grid.Column="2" TextAlignment="Right" VerticalAlignment="Center" />
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="90" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="LED glow" VerticalAlignment="Center" />
+                                    <Slider x:Name="GlowSlider" Grid.Column="1" Minimum="0" Maximum="1" TickFrequency="0.05"
+                                            IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="OnChanged" />
+                                    <TextBlock x:Name="GlowText" Grid.Column="2" TextAlignment="Right" VerticalAlignment="Center" />
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="LED shape" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="ShapeBox" Grid.Column="1" MinWidth="170" SelectionChanged="OnChanged">
+                                        <ComboBoxItem Content="Square" />
+                                        <ComboBoxItem Content="Round" />
+                                    </ComboBox>
+                                </Grid>
+                                <CheckBox x:Name="SmoothBox" Content="Fade smoothly between patterns" Margin="0,6" Click="OnChanged" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Appearance">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Style="{StaticResource TabPage}">
+                        <TextBlock Text="Theme and background" Style="{StaticResource SectionHeader}" />
+                        <Border Style="{StaticResource HeadedCard}">
+                            <StackPanel>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Theme" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="ThemeBox" Grid.Column="1" MinWidth="170" SelectionChanged="OnChanged">
+                                        <ComboBoxItem Content="Match Windows" />
+                                        <ComboBoxItem Content="Light" />
+                                        <ComboBoxItem Content="Dark" />
+                                    </ComboBox>
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Background" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="BackdropBox" Grid.Column="1" MinWidth="170" SelectionChanged="OnChanged">
+                                        <ComboBoxItem Content="Acrylic" />
+                                        <ComboBoxItem Content="Mica" />
+                                        <ComboBoxItem Content="Solid" />
+                                    </ComboBox>
+                                </Grid>
+                                <TextBlock x:Name="BackdropNote" Style="{StaticResource Hint}" Margin="0,0,0,6" Visibility="Collapsed"
+                                           Text="Acrylic and Mica need Windows 11 version 22H2 or later, so a solid background is used here." />
+                                <TextBlock x:Name="RestartNote" Style="{StaticResource Hint}" Margin="0,0,0,6"
+                                           Text="Switching between Solid and Acrylic or Mica restarts the clock." />
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="140" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Background opacity" VerticalAlignment="Center" />
+                                    <Slider x:Name="OpacitySlider" Grid.Column="1" Minimum="0" Maximum="1" TickFrequency="0.05"
+                                            IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="OnChanged" />
+                                    <TextBlock x:Name="OpacityText" Grid.Column="2" TextAlignment="Right" VerticalAlignment="Center" />
+                                </Grid>
+                                <TextBlock Style="{StaticResource Hint}" Margin="0,0,0,6"
+                                           Text="Applies to the solid background. At 0% only the LEDs float on your desktop." />
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Colours" Style="{StaticResource SectionHeader}" />
+                        <Border Style="{StaticResource HeadedCard}">
+                            <StackPanel>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Preset" VerticalAlignment="Center" />
+                                    <ComboBox x:Name="PresetBox" Grid.Column="1" MinWidth="200" SelectionChanged="PresetBox_SelectionChanged" />
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Hour tens" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1" Tag="0" Padding="6" Click="PickColour_Click" ToolTip="Choose colour">
+                                        <Border x:Name="Swatch0" Width="48" Height="18" CornerRadius="3" />
+                                    </Button>
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Hour units" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1" Tag="1" Padding="6" Click="PickColour_Click" ToolTip="Choose colour">
+                                        <Border x:Name="Swatch1" Width="48" Height="18" CornerRadius="3" />
+                                    </Button>
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Minute tens" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1" Tag="2" Padding="6" Click="PickColour_Click" ToolTip="Choose colour">
+                                        <Border x:Name="Swatch2" Width="48" Height="18" CornerRadius="3" />
+                                    </Button>
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Minute units" VerticalAlignment="Center" />
+                                    <Button Grid.Column="1" Tag="3" Padding="6" Click="PickColour_Click" ToolTip="Choose colour">
+                                        <Border x:Name="Swatch3" Width="48" Height="18" CornerRadius="3" />
+                                    </Button>
+                                </Grid>
+                                <Grid Style="{StaticResource Row}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Unlit squares" VerticalAlignment="Center" />
+                                    <CheckBox x:Name="OffMatchThemeBox" Grid.Column="1" Content="Match theme" Margin="0,0,12,0"
+                                              VerticalAlignment="Center" Click="OffMatchTheme_Click" />
+                                    <Button x:Name="OffSwatchButton" Grid.Column="2" Tag="off" Padding="6" Click="PickColour_Click" ToolTip="Choose colour">
+                                        <Border x:Name="SwatchOff" Width="48" Height="18" CornerRadius="3" />
+                                    </Button>
+                                </Grid>
+                                <Button Content="Reset colours" HorizontalAlignment="Left" Margin="0,8,0,6" Click="ResetColours_Click" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Night">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Style="{StaticResource TabPage}">
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <CheckBox x:Name="NightBox" Content="Dim the clock at night" Margin="0,6" Click="OnChanged" />
+                                <StackPanel x:Name="NightOptions">
+                                    <Grid Style="{StaticResource Row}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="From" VerticalAlignment="Center" />
+                                        <ComboBox x:Name="NightStartBox" Grid.Column="1" MinWidth="96" MaxDropDownHeight="300"
+                                                  SelectionChanged="OnChanged" />
+                                        <TextBlock Grid.Column="2" Text="to" Margin="12,0" VerticalAlignment="Center" />
+                                        <ComboBox x:Name="NightEndBox" Grid.Column="3" MinWidth="96" MaxDropDownHeight="300"
+                                                  SelectionChanged="OnChanged" />
+                                    </Grid>
+                                    <Grid Style="{StaticResource Row}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="140" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="50" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Night brightness" VerticalAlignment="Center" />
+                                        <Slider x:Name="NightBrightnessSlider" Grid.Column="1" Minimum="0.05" Maximum="1" TickFrequency="0.05"
+                                                IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="OnChanged" />
+                                        <TextBlock x:Name="NightBrightnessText" Grid.Column="2" TextAlignment="Right" VerticalAlignment="Center" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Behaviour">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Style="{StaticResource TabPage}">
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <CheckBox x:Name="TopmostBox" Content="Always on top" Margin="0,6" Click="OnChanged" />
+                                <CheckBox x:Name="LockBox" Content="Lock position" Margin="0,6" Click="OnChanged" />
+                                <CheckBox x:Name="ClickThroughBox" Content="Click-through (the mouse passes through the clock)" Margin="0,6,0,0"
+                                          Click="OnChanged" />
+                                <TextBlock Style="{StaticResource Hint}" Margin="28,2,0,6"
+                                           Text="While this is on, use the tray icon to open settings or turn it off." />
+                                <CheckBox x:Name="FullScreenBox" Content="Hide while a full-screen app is in use" Margin="0,6" Click="OnChanged" />
+                                <CheckBox x:Name="StartupBox" Content="Start with Windows" Margin="0,6" Click="Startup_Click" />
+                                <CheckBox x:Name="PortableBox" Content="Portable mode (keep settings next to the app)" Margin="0,6,0,0"
+                                          Click="Portable_Click" />
+                                <TextBlock x:Name="SettingsPathText" Style="{StaticResource Hint}" Margin="28,2,0,6" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem x:Name="AboutTab" Header="About">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Style="{StaticResource TabPage}">
+                        <Border Style="{StaticResource Card}">
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="TixClock.ico" Width="40" Height="40" Margin="0,0,14,0" VerticalAlignment="Top" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="TIX Clock" FontSize="15" FontWeight="SemiBold" />
+                                    <TextBlock x:Name="VersionText" Style="{StaticResource Hint}" Margin="0,2,0,8" />
+                                    <TextBlock Text="Created by Ben Somner with Claude Code" TextWrapping="Wrap" />
+                                    <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,0"
+                                               Text="Inspired by the original TIX LED clock by Cube Root Labs." />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Text="Tips" Style="{StaticResource SectionHeader}" />
+                        <Border Style="{StaticResource HeadedCard}">
+                            <StackPanel Margin="0,6">
+                                <TextBlock TextWrapping="Wrap" Margin="0,0,0,6"
+                                           Text="Count the lit squares in each block to read the time: hour tens, hour units, minute tens, minute units." />
+                                <TextBlock TextWrapping="Wrap" Margin="0,0,0,6"
+                                           Text="Drag the clock to move it, and Ctrl + scroll over it to resize it." />
+                                <TextBlock TextWrapping="Wrap"
+                                           Text="Right-click the clock for quick options, or use the tray icon to show, hide or set up the clock." />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="1" Padding="24,12" BorderThickness="0,1,0,0"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+            <Button Content="Close" HorizontalAlignment="Right" MinWidth="96" IsDefault="True" IsCancel="True" Click="Close_Click" />
+        </Border>
+    </Grid>
+</Window>

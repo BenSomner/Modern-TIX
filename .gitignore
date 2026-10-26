@@ -1,0 +1,13 @@
+# Build output
+bin/
+obj/
+publish/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+
+# A portable-mode settings file, if one ends up next to a build
+TixClock.settings.json

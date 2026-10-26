@@ -1,0 +1,24 @@
+<Window x:Class="TixClock.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TIX Clock"
+        Icon="TixClock.ico"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        WindowStartupLocation="Manual"
+        Background="Transparent">
+    <!-- The window is either per-pixel transparent or uses WindowChrome for Acrylic/Mica; MainWindow picks in code.
+         ClipToBounds keeps the LED glow inside the clock's edge. -->
+    <Border x:Name="Root" Background="Transparent" Padding="12" ClipToBounds="True">
+        <Border.LayoutTransform>
+            <TransformGroup>
+                <ScaleTransform x:Name="RootScale" />
+                <RotateTransform x:Name="RootRotate" />
+            </TransformGroup>
+        </Border.LayoutTransform>
+        <StackPanel x:Name="BlocksPanel" Orientation="Horizontal" />
+    </Border>
+</Window>
