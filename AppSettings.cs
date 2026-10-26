@@ -28,7 +28,8 @@ public sealed class AppSettings
     public string? OffColour { get; set; }
 
     public int UpdateIntervalSeconds { get; set; } = 4;
-    public bool Use24Hour { get; set; } = true;
+    // Defaults follow the original hardware: 12-hour time and instant pattern changes.
+    public bool Use24Hour { get; set; }
     public double Brightness { get; set; } = 1.0;
     public double Scale { get; set; } = 1.0;
 
@@ -48,7 +49,7 @@ public sealed class AppSettings
     }
 
     public LedShape Shape { get; set; } = LedShape.Square;
-    public bool SmoothTransitions { get; set; } = true;
+    public bool SmoothTransitions { get; set; }
     public bool ShowTooltip { get; set; } = true;
     public bool ShowDateInTooltip { get; set; } = true;
     public bool AlwaysOnTop { get; set; } = true;
